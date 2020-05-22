@@ -21,6 +21,9 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("io.ktor:ktor-server-core:${Versions.KTOR_VERSION}")
     implementation("io.ktor:ktor-server-netty:${Versions.KTOR_VERSION}")
+    // logging
+    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("io.github.microutils:kotlin-logging:1.7.9")
 }
 
 tasks {
@@ -29,5 +32,25 @@ tasks {
     }
     compileTestKotlin {
         kotlinOptions.jvmTarget = "11"
+    }
+    jar {
+        manifest {
+            attributes(mapOf("Main-Class" to "com.olx.example.WebApplicationKt"))
+        }
+    }
+    val fatJar = task("fatJar", type = Jar::class) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        manifest {
+            attributes["Implementation-Title"] = "Gradle Fat Jar File"
+            attributes["Main-Class"] = "com.olx.example.WebApplicationKt"
+        }
+        from(configurations.runtimeClasspath.get().map {
+            if (it.isDirectory) it else zipTree(it)
+        })
+        val jar: CopySpec by getting(Jar::class); with(jar)
+    }
+
+    build {
+        dependsOn(fatJar)
     }
 }
