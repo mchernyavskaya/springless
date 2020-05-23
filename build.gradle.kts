@@ -48,6 +48,11 @@ tasks {
             if (it.isDirectory) it else zipTree(it)
         })
         val jar: CopySpec by getting(Jar::class); with(jar)
+        exclude(
+            "**/*.kotlin_metadata",
+            "**/*.kotlin_module",
+            "**/*.kotlin_builtins"
+        )
     }
 
     build {
