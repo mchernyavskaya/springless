@@ -24,6 +24,8 @@ dependencies {
     // logging
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("io.github.microutils:kotlin-logging:1.7.9")
+    // Jackson JSON
+    implementation("io.ktor:ktor-jackson:${Versions.KTOR_VERSION}")
 }
 
 tasks {
