@@ -1,0 +1,4 @@
+POST http://localhost:8080/people
+Content-Type: application/json
+
+{ "name": "Maryna Cherniavska", "birthYear": 1981 }
