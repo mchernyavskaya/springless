@@ -18,23 +18,24 @@ private val logger = KotlinLogging.logger {}
 
 fun main() {
     embeddedServer(Netty, 8080) {
+        logger.debug { "Embedded Netty server created..." }
         install(ContentNegotiation) {
             jackson {
                 // pretty print
                 enable(SerializationFeature.INDENT_OUTPUT)
             }
         }
-        logger.debug { "Embedded Netty server created..." }
         routing {
             get("/") {
+                logger.debug("GET /")
                 call.respondText(
                     contentType = ContentType.Text.Html,
                     text = "<h1>My Example Application</h1>"
                 )
             }
             get("/people") {
+                logger.debug("GET /people")
                 call.respond(initData())
-                logger.debug("GET /")
                 call.respondText("<h1>My Example Application</h1>", ContentType.Text.Html)
             }
         }
