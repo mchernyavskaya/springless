@@ -3,7 +3,6 @@ package com.olx.example
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.call
 import io.ktor.application.install
-import io.ktor.application.log
 import io.ktor.features.ContentNegotiation
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
@@ -17,13 +16,11 @@ import io.ktor.routing.post
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import mu.KLogger
-import mu.KLogging
+import mu.KotlinLogging
 import java.util.Collections
-import java.util.logging.Logger
 
 val DATA: MutableCollection<Person> = Collections.synchronizedList(mutableListOf())
-val logger: KLogger = KLogging().logger
+val logger = KotlinLogging.logger { }
 
 fun main() {
     DATA.addAll(initData())
@@ -45,6 +42,7 @@ fun main() {
                 )
             }
             get("/people") {
+                logger.debug { context.request.uri }
                 call.respond(DATA)
             }
             post("/people") {
